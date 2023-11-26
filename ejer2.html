@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario y Cookies</title>
+</head>
+<body>
+
+<form id="miFormulario">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
+
+    <br>
+
+    <label>Género:</label>
+    <input type="radio" id="masculino" name="genero" value="masculino">
+    <label for="masculino">Masculino</label>
+    <input type="radio" id="femenino" name="genero" value="femenino">
+    <label for="femenino">Femenino</label>
+
+    <br>
+
+    <label>Hobbies:</label>
+    <input type="checkbox" id="hobby1" name="hobbies" value="futbol">
+    <label for="hobby1">Fútbol</label>
+    <input type="checkbox" id="hobby2" name="hobbies" value="lectura">
+    <label for="hobby2">Lectura</label>
+    <input type="checkbox" id="hobby3" name="hobbies" value="viajes">
+    <label for="hobby3">Viajes</label>
+
+    <br>
+
+    <input type="submit" value="Guardar y Mostrar">
+</form>
+
+<script>
+document.getElementById('miFormulario').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    const formDataObject = {};
+
+    formData.forEach((value, key) => {
+        formDataObject[key] = value;
+    });
+
+    // Guardar los datos como cookies
+    document.cookie = "formularioData=" + JSON.stringify(formDataObject);
+
+    // Recuperar los datos de las cookies y mostrar en un alert
+    const cookies = document.cookie.split(';');
+    let formDataFromCookie;
+
+    cookies.forEach(cookie => {
+        const [name, value] = cookie.split('=').map(c => c.trim());
+        if (name === 'formularioData') {
+            formDataFromCookie = JSON.parse(value);
+        }
+    });
+
+    if (formDataFromCookie) {
+        alert("Datos del formulario:\n" + JSON.stringify(formDataFromCookie, null, 2));
+    } else {
+        alert("No se encontraron datos del formulario en las cookies.");
+    }
+});
+</script>
+
+</body>
+</html>
